@@ -44,61 +44,35 @@ public class Controller {
 	}
 	
 	@PostMapping("/users")
-	public ResponseEntity<?> createUser(@RequestBody User user) {
+	public ResponseEntity<?> createUser(@RequestBody User user) throws ConstraintViolationException, UserException {
 		logger.info("Entered CreateUser function");
-		try {
 //			user.setCreatedAt(new Date(System.currentTimeMillis()));
 //			repo.save(user);
 			userService.createUser(user);
 			logger.info("Created User");
-			return new ResponseEntity<User>(user, HttpStatus.OK);
-		} catch(ConstraintViolationException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-			
-		} catch(UserException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-		}
-		
+			return new ResponseEntity<User>(user, HttpStatus.OK);		
 	}
 	
 	@GetMapping("/users/{id}")
-	public ResponseEntity<?> getUser(@PathVariable("id") String id){
+	public ResponseEntity<?> getUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered getSingleUser function");
-		try {
-			return new ResponseEntity<>(userService.getSingleUser(id), HttpStatus.OK);
-		} catch(Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+		return new ResponseEntity<>(userService.getSingleUser(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable("id") String id,@RequestBody User user){
+	public ResponseEntity<?> updateUser(@PathVariable("id") String id,@RequestBody User user) throws UserException{
 		logger.info("Entered UpdateUser function");
-		try {
-			userService.updateUser(id, user);
-			logger.info("Updated User with id {}", id);
-			return new ResponseEntity<>("Updated User with id "+id, HttpStatus.OK);
-		} catch(ConstraintViolationException e) {
-			logger.error(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-		} catch(UserException e) {
-			logger.error(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+		userService.updateUser(id, user);
+		logger.info("Updated User with id {}", id);
+		return new ResponseEntity<>("Updated User with id "+id, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/users/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable("id") String id){
+	public ResponseEntity<?> deleteUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered DeleteUser function");
-		try {
-			userService.deleteUserById(id);
-			logger.info("Deleted User with id {}",id);
-			return new ResponseEntity<>("Succesfully deleted user with id "+id, HttpStatus.OK);
-		}
-		catch(UserException e) {
-			logger.error(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+		userService.deleteUserById(id);
+		logger.info("Deleted User with id {}",id);
+		return new ResponseEntity<>("Succesfully deleted user with id "+id, HttpStatus.OK);
 	}
 	
 }

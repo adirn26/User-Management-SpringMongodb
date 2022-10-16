@@ -19,7 +19,7 @@ import com.usercrud.Usermanagement.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+//	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
 	private UserRepository repo;
