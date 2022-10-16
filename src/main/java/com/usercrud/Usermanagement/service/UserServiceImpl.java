@@ -77,8 +77,11 @@ public class UserServiceImpl implements UserService {
 				throw new UserException(UserException.EmailAlreadyExists());
 			}
 			User upUser = useroptional.get();
+			if(user.getEmail()!=null)
 			upUser.setEmail(user.getEmail());
+			if(user.getUsername()!=null)
 			upUser.setUsername(user.getUsername());
+			if(user.getPassword()!=null)
 			upUser.setPassword(user.getPassword());
 			upUser.setUpdatedAt(new Date(System.currentTimeMillis()));
 			repo.save(upUser);
