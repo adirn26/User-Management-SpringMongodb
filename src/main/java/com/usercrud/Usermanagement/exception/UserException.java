@@ -15,7 +15,7 @@ public class UserException extends Exception {
 		super(message);
 	}
 	
-	public static String NotFoundException(String id) {
+	public static String NotFoundException(int id) {
 		logger.error("User with {} not found", id);
 		return "User with "+id+" Not found!";
 	}

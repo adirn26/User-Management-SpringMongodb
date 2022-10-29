@@ -1,28 +1,18 @@
 package com.usercrud.Usermanagement.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.ConstraintViolationException;
-
+import com.usercrud.Usermanagement.exception.UserException;
+import com.usercrud.Usermanagement.model.User;
+import com.usercrud.Usermanagement.repository.UserRepository;
+import com.usercrud.Usermanagement.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.usercrud.Usermanagement.exception.UserException;
-import com.usercrud.Usermanagement.model.User;
-import com.usercrud.Usermanagement.repository.UserRepository;
-import com.usercrud.Usermanagement.service.UserService;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
 
 
 @RestController
@@ -54,13 +44,13 @@ public class Controller {
 	}
 	
 	@GetMapping("/users/{id}")
-	public ResponseEntity<?> getUser(@PathVariable("id") String id) throws UserException{
+	public ResponseEntity<?> getUser(@PathVariable("id") int id) throws UserException{
 		logger.info("Entered getSingleUser function");
 		return new ResponseEntity<>(userService.getSingleUser(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable("id") String id,@RequestBody User user) throws UserException{
+	public ResponseEntity<?> updateUser(@PathVariable("id") int id,@RequestBody User user) throws UserException{
 		logger.info("Entered UpdateUser function");
 		userService.updateUser(id, user);
 		logger.info("Updated User with id {}", id);
@@ -68,7 +58,7 @@ public class Controller {
 	}
 	
 	@DeleteMapping("/users/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable("id") String id) throws UserException{
+	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) throws UserException{
 		logger.info("Entered DeleteUser function");
 		userService.deleteUserById(id);
 		logger.info("Deleted User with id {}",id);

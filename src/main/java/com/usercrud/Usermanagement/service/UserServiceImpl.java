@@ -1,20 +1,16 @@
 package com.usercrud.Usermanagement.service;
 
+import com.usercrud.Usermanagement.exception.UserException;
+import com.usercrud.Usermanagement.model.User;
+import com.usercrud.Usermanagement.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.validation.ConstraintViolationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.usercrud.Usermanagement.exception.UserException;
-import com.usercrud.Usermanagement.model.User;
-import com.usercrud.Usermanagement.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +19,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository repo;
+
+	@Autowired
+	private SequenceGenerator seqservice;
 	
 	@Override
 	public void createUser(User user) throws ConstraintViolationException,UserException{
@@ -37,6 +36,7 @@ public class UserServiceImpl implements UserService {
 		}
 		else {
 			user.setCreatedAt(new Date(System.currentTimeMillis()));
+			user.setId(seqservice.getSequenceNum(User.SEQUENCE_NAME));
 			repo.save(user);
 		}
 	}
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getSingleUser(String id) throws UserException {
+	public User getSingleUser(int id) throws UserException {
 		Optional<User> useroptional = repo.findById(id);
 		if(!useroptional.isPresent()) {
 			throw new UserException(UserException.NotFoundException(id));
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(String id, User user) throws UserException {
+	public void updateUser(int id, User user) throws UserException {
 		// TODO Auto-generated method stub
 		Optional<User> useroptional = repo.findById(id);
 		Optional<User> sameusername = repo.findByUser(user.getUsername());
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUserById(String id) throws UserException {
+	public void deleteUserById(int id) throws UserException {
 		Optional<User> useroptional = repo.findById(id);
 		if(useroptional.isPresent()) {
 			repo.deleteById(id);

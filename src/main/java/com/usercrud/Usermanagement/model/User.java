@@ -1,16 +1,15 @@
 package com.usercrud.Usermanagement.model;
 
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -18,9 +17,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Document
 public class User {
+
+	@Transient
+	public static final String SEQUENCE_NAME = "user_sequence";
 	
 	@Id
-	private String id;
+	private int id;
 	
 	@NotNull(message = "username cant be null")
 	private String username;
