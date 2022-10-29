@@ -22,7 +22,7 @@ public class User {
 	public static final String SEQUENCE_NAME = "user_sequence";
 	
 	@Id
-	private int id;
+	private String id;
 	
 	@NotNull(message = "username cant be null")
 	private String username;

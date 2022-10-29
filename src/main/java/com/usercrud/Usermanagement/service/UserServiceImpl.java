@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		}
 		else {
 			user.setCreatedAt(new Date(System.currentTimeMillis()));
-			user.setId(seqservice.getSequenceNum(User.SEQUENCE_NAME));
+			user.setId("1DS20CS0"+String.valueOf(seqservice.getSequenceNum(User.SEQUENCE_NAME)));
 			repo.save(user);
 		}
 	}
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getSingleUser(int id) throws UserException {
+	public User getSingleUser(String id) throws UserException {
 		Optional<User> useroptional = repo.findById(id);
 		if(!useroptional.isPresent()) {
 			throw new UserException(UserException.NotFoundException(id));
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(int id, User user) throws UserException {
+	public void updateUser(String id, User user) throws UserException {
 		// TODO Auto-generated method stub
 		Optional<User> useroptional = repo.findById(id);
 		Optional<User> sameusername = repo.findByUser(user.getUsername());
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUserById(int id) throws UserException {
+	public void deleteUserById(String id) throws UserException {
 		Optional<User> useroptional = repo.findById(id);
 		if(useroptional.isPresent()) {
 			repo.deleteById(id);

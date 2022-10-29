@@ -44,13 +44,13 @@ public class Controller {
 	}
 	
 	@GetMapping("/users/{id}")
-	public ResponseEntity<?> getUser(@PathVariable("id") int id) throws UserException{
+	public ResponseEntity<?> getUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered getSingleUser function");
 		return new ResponseEntity<>(userService.getSingleUser(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable("id") int id,@RequestBody User user) throws UserException{
+	public ResponseEntity<?> updateUser(@PathVariable("id") String id,@RequestBody User user) throws UserException{
 		logger.info("Entered UpdateUser function");
 		userService.updateUser(id, user);
 		logger.info("Updated User with id {}", id);
@@ -58,7 +58,7 @@ public class Controller {
 	}
 	
 	@DeleteMapping("/users/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) throws UserException{
+	public ResponseEntity<?> deleteUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered DeleteUser function");
 		userService.deleteUserById(id);
 		logger.info("Deleted User with id {}",id);
