@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		}
 		else {
 			user.setCreatedAt(new Date(System.currentTimeMillis()));
-			user.setId("1DS20CS0"+String.valueOf(seqservice.getSequenceNum(User.SEQUENCE_NAME)));
+			user.setId("DSCE-"+String.valueOf(seqservice.getSequenceNum(User.SEQUENCE_NAME)));
 			repo.save(user);
 		}
 	}
