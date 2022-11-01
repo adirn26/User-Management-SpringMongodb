@@ -3,7 +3,12 @@ package com.usercrud.Usermanagement.service;
 import com.usercrud.Usermanagement.exception.UserException;
 import com.usercrud.Usermanagement.model.User;
 import com.usercrud.Usermanagement.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
@@ -15,7 +20,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 	
-//	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
 	private UserRepository repo;
@@ -53,7 +58,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Cacheable(value = User.HASH_VALUE ,key = "#id")
 	public User getSingleUser(String id) throws UserException {
+		logger.info("Entered getSingleUser DB call");
 		Optional<User> useroptional = repo.findById(id);
 		if(!useroptional.isPresent()) {
 			throw new UserException(UserException.NotFoundException(id));
@@ -64,8 +71,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@CachePut(value = User.HASH_VALUE, key = "#id")
 	public void updateUser(String id, User user) throws UserException {
 		// TODO Auto-generated method stub
+		logger.info("Entered UpdateUser DB call");
 		Optional<User> useroptional = repo.findById(id);
 		Optional<User> sameusername = repo.findByUser(user.getUsername());
 		Optional<User> sameemail = repo.findByEmail(user.getEmail());
@@ -91,7 +100,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@CacheEvict(value = User.HASH_VALUE, key = "#id")
 	public void deleteUserById(String id) throws UserException {
+		logger.info("Entered DeleteUser DB call");
 		Optional<User> useroptional = repo.findById(id);
 		if(useroptional.isPresent()) {
 			repo.deleteById(id);

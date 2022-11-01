@@ -47,7 +47,7 @@ public class Controller {
 	}
 	
 	@GetMapping("/users/{id}")
-	@RolesAllowed("user")
+	@RolesAllowed({"user", "admin"})
 	public ResponseEntity<?> getUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered getSingleUser function");
 		return new ResponseEntity<>(userService.getSingleUser(id), HttpStatus.OK);

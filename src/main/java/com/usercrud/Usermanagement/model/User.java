@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Setter
@@ -16,10 +17,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class User {
+public class User implements Serializable {
 
 	@Transient
 	public static final String SEQUENCE_NAME = "user_sequence";
+
+	@Transient
+	public static final String HASH_VALUE = "USER";
 	
 	@Id
 	private String id;
