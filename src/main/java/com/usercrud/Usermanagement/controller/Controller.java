@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class Controller {
 	private static final Logger logger = LoggerFactory.getLogger(Controller.class);
 	
 	@GetMapping("/users")
+	@RolesAllowed("admin")
 	public ResponseEntity<?> getAllUsers() {
 		logger.info("Entered GetAllUsers function");
 		List<User> users = userService.getAlltodos();
@@ -34,6 +36,7 @@ public class Controller {
 	}
 	
 	@PostMapping("/users")
+	@RolesAllowed("admin")
 	public ResponseEntity<?> createUser(@RequestBody User user) throws ConstraintViolationException, UserException {
 		logger.info("Entered CreateUser function");
 //			user.setCreatedAt(new Date(System.currentTimeMillis()));
@@ -44,6 +47,7 @@ public class Controller {
 	}
 	
 	@GetMapping("/users/{id}")
+	@RolesAllowed("user")
 	public ResponseEntity<?> getUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered getSingleUser function");
 		return new ResponseEntity<>(userService.getSingleUser(id), HttpStatus.OK);
@@ -58,6 +62,7 @@ public class Controller {
 	}
 	
 	@DeleteMapping("/users/{id}")
+	@RolesAllowed("admin")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") String id) throws UserException{
 		logger.info("Entered DeleteUser function");
 		userService.deleteUserById(id);
