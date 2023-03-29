@@ -1,5 +1,5 @@
 # User-Management-SpringMongodb
-This is a web application built with Spring Boot for the backend and MongoDB for the database that manages user accounts. It provides RESTful API endpoints to create, read, update, and delete user accounts.
+This is a Spring boot API built with MongoDB for the database that manages user accounts. It provides RESTful API endpoints to create, read, update, and delete user accounts.
 
 ## Features
 - User account management
